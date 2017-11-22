@@ -1,0 +1,20 @@
+********Check_if_TestData_DataLog_Folder_Exists:********
+Sub Check_if_TestData_DataLog_Folder_Exists()
+
+Dim f, dtDateTime, sPath, sFolder1
+
+Set f = CreateObject("FileCtl.FileSystem")
+
+ sPath = "Storage Card SD"
+ sFolder1 = "TestData"
+
+'Check to see if folder 1 structure exists, if not then create it
+ If f.Dir("\" & sPath & "\" & sFolder1, 16) = "" Then
+  f.MkDir "\" & sPath & "\" & sFolder1
+  ShowSystemAlarm "Storage Folder Main Structure Created" 
+ ElseIf f.Dir ("\" & sPath & "\" & sFolder1, 16) = sFolder1 Then
+  'ShowSystemAlarm "Storage Folder Main Structure Already Exists"
+ End If
+ 
+ Set f = Nothing
+End Sub

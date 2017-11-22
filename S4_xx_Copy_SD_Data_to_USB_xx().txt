@@ -1,0 +1,43 @@
+********xx_Copy_SD_Data_to_USB_xx********
+Sub xx_Copy_SD_Data_to_USB_xx()
+
+Dim f, MediaCheckCE, fileToMove, LoopContinue
+
+LoopContinue = "yes"
+
+Set f = CreateObject("Filectl.filesystem")
+
+If f.dir("\Storage Card USB")="" Then
+MediaCheckCE= 0
+Else
+MediaCheckCE= 1
+End If
+
+If MediaCheckCE=1 Then
+'Check to see if folder exists on USB flash drive and if not, create it
+ If f.Dir("\Storage Card USB\TestData\", 16) = "" Then
+  f.MkDir "\Storage Card USB\TestData\"
+  ShowSystemAlarm "Storage Folder Created on USB" 
+ ElseIf f.Dir ("\Storage Card USB\TestData\", 16) <> "" Then
+  'ShowSystemAlarm "Storage Folder on USB Already Exists"
+ End If 
+
+'Check for files in folder to move
+ 
+Do While (LoopContinue = "yes")
+ fileToMove = f.Dir("\Storage Card SD\TestData\.")
+ SmartTags("String for File to Move") = fileToMove
+ If fileToMove <> "" Then 
+ f.MoveFile ("\Storage Card SD\TestData\" & fileToMove), ("\Storage Card USB\TestData\" & fileToMove)  
+ ElseIf fileToMove = "" Then
+  LoopContinue = "no"
+ End If 
+Loop
+ 
+ShowSystemAlarm "Files Moved"
+Else
+ShowSystemAlarm "USB media not ready!"
+End If
+ 
+Set f = Nothing
+End Sub﻿

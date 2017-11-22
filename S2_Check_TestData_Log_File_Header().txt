@@ -1,0 +1,85 @@
+
+
+
+********Check_TestData_Log_File_Header********
+Sub Check_TestData_Log_File_Header()
+
+Dim f, MyFile, dtDateTime, sMonth, sDay, sHour, sMinute 
+Dim sFileName, sRead, sField, sPath, sFolder1
+
+'Setup Data File and Check to see if it already exists
+ sPath = "Storage Card SD"
+ sFolder1 = "TestData"
+ 
+'Determine Date and Time and Move to variable
+ dtDateTime = Now
+
+'Determine Hour and Minute for filename
+ sHour = DatePart("h", dtDateTime)
+ sMinute = DatePart("n", dtDateTime)
+
+'Format Month for filename so it is always two digits
+ sMonth = DatePart("m", dtDateTime)
+ If Len(sMonth) = 1 Then
+  sMonth = "0" & sMonth
+ End If
+
+'Format Day for filename so it is always two digits
+ sDay = DatePart("d", dtDateTime)
+ If Len(sDay) = 1 Then
+  sDay = "0" & sDay
+ End If
+
+'Format filename using date structure (Test_yearmonthday).csv
+ sFileName = "Test_"
+ sFileName = sFileName & DatePart("yyyy", dtDateTime)
+ sFileName = sFileName & sMonth
+ sFileName = sFileName & sDay
+ sFileName = sFileName & ".csv"
+ MyFile = ("\" & sPath & "\" & sFolder1 & "\" & sFileName)
+ 
+ On Error Resume Next
+ 
+ Set f = CreateObject("FileCtl.FileSystem")
+ 
+'Check to see if file exists - if not, set header bit high to print header row
+ If f.Dir("\" & sPath & "\" & sFolder1 & "\" & sFileName) = "" Then
+  SetBit "Log File Needs Header"
+  ShowSystemAlarm "File Does Not Exist"
+  Set f = Nothing
+  Exit Sub
+ End If
+
+ If Err.Number <> 0 Then
+  ShowSystemAlarm "Error #" ^ CStr(Err.Number) & " " & Err.Description
+  Exit Sub
+ End If
+ 
+ Set f = CreateObject("FileCtl.File")
+ 
+ If Err.Number <> 0 Then
+  ShowSystemAlarm "Error #" ^ CStr(Err.Number) & " " & Err.Description
+  Exit Sub
+ End If
+ 
+ f.open MyFile, 1
+   
+ If Err.Number <> 0 Then
+  ShowSystemAlarm "Error #" ^ CStr(Err.Number) & " " & Err.Description
+  Exit Sub
+ End If
+
+ Do While f.EOF = False
+ sRead = f.LineInputString
+ sField = Split(sRead, ",")
+ Loop
+ Set f = Nothing
+
+ If sRead = "" Then
+  SetBit "Log File Needs Header"
+ End If
+ 
+ Set f = Nothing
+ 
+' ShowSystemAlarm "File Exists - Check Complete!"
+End Sub

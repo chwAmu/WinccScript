@@ -1,0 +1,95 @@
+********Write_TestData_Into_Log_File********
+Sub Write_TestData_Into_Log_File()
+
+Dim f, MyFile, dtDateTime, sMonth, sDay, sYear, sHour, sMinute, sSecond
+Dim sFileName, sHeader, sPath, sFolder1
+Dim sPartNumber, sSerialNumber,sInitialPressure, sFinalPressure, sPressureDecay, sTestResult
+
+'Setup Data File Storage Paths
+ sPath = "Storage Card SD"
+ sFolder1 = "TestData"
+
+'Determine Date and Time and Move to variable
+ dtDateTime = Now
+ sYear = DatePart("yyyy",dtDateTime)
+
+'Assign Runtime variables to Local Variables for Log File 
+ sHeader = HmiRuntime.SmartTags("Log File Needs Header")
+
+ sPartNumber = HmiRuntime.SmartTags("Part Number")
+ sSerialNumber = HmiRuntime.SmartTags("Serial Number")
+ sInitialPressure = HmiRuntime.SmartTags("Initial Pressure")
+ sFinalPressure = HmiRuntime.SmartTags("Final Pressure")
+ sPressureDecay = HmiRuntime.SmartTags("Pressure Decay")
+ 
+ If HmiRuntime.SmartTags("Test Result") = True Then
+  sTestResult = "Passed"
+ Else
+  sTestResult = "Failed"
+ End If
+                    'Determine Hour, Minute, and Seconds for Data File
+ sHour = DatePart("h", dtDateTime)
+ If Len(sHour) = 1 Then
+  sHour = "0" & sHour
+ End If
+
+ sMinute = DatePart("n", dtDateTime)
+  If Len(sMinute) = 1 Then
+  sMinute = "0" & sMinute
+ End If
+
+ sSecond = DatePart("s", dtDateTime)
+ If Len(sSecond) = 1 Then
+  sSecond = "0" & sSecond
+ End If
+
+ 
+'Format Month for filename so it is always two digits
+ sMonth = DatePart("m", dtDateTime)
+ If Len(sMonth) = 1 Then
+  sMonth = "0" & sMonth
+ End If
+
+'Format Day for filename so it is always two digits
+ sDay = DatePart("d", dtDateTime)
+ If Len(sDay) = 1 Then
+  sDay = "0" & sDay
+ End If
+
+'Format filename using date structure (yearmonthday).csv
+ sFileName = "Test_"
+ sFileName = sFileName & DatePart("yyyy", dtDateTime)
+ sFileName = sFileName & sMonth
+ sFileName = sFileName & sDay
+ sFileName = sFileName & ".csv"
+ MyFile = ("\" & sPath & "\" & sFolder1 & "\" & sFileName)
+ 
+'Write Data in Data File 
+ 
+ On Error Resume Next
+ 
+ Set f = CreateObject("FileCtl.File")
+  
+ If Err.Number <> 0 Then
+  ShowSystemAlarm "Error #" ^ CStr(Err.Number) & " " & Err.Description
+  Exit Sub
+ End If
+ 
+ f.open MyFile, 8
+   
+ If Err.Number <> 0 Then
+  ShowSystemAlarm "Error #" ^ CStr(Err.Number) & " " & Err.Description
+  Exit Sub
+ End If
+  
+ If sHeader <> 0 Then
+  f.LinePrint ("Date," & "Time," & "Part Number," & "Serial Number," & "Initial Pressure," & "Final Pressure," & "Pressure Decay," & "Test Result")
+ End If
+ f.LinePrint (sMonth & "/" & sDay & "/" & sYear & "," & sHour & ":" & sMinute & ":" & sSecond & "," & sPartNumber & "," & sSerialNumber & "," & Round(sInitialPressure,2) & "," & Round(sFinalPressure,2) & "," & Round(sPressureDecay,2) & "," & sTestResult)
+ f.Close
+ Set f = Nothing
+ 
+ ShowSystemAlarm "Storage of the data was successful!"
+ ResetBit "Log File Needs Header" 
+ HmiRuntime.SmartTags("Log Data") = 0
+End Sub
