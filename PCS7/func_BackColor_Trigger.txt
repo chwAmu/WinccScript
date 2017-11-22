@@ -1,0 +1,22 @@
+Function BackColor_Trigger(Byval Item)
+
+	Dim B0,B1
+	
+	Set B0=HMIRuntime.Tags("DeviceSet/Testing/DataBlocksGlobal/Data2WINCC/05Action/CurrentAction/0")
+	Set B1=HMIRuntime.Tags("DeviceSet/Testing/DataBlocksGlobal/Data2WINCC/05Action/CurrentAction/1")
+	
+	Dim B00,B01
+	
+	B00=B0.Read
+	B01=B1.Read
+	
+	
+	If B00 Then
+		Item.BackColor=RGB(255,85,101)
+		Else If B01 Then
+			Item.BackColor=RGB(255,250,0)
+			End If
+	End If
+	
+
+End Function

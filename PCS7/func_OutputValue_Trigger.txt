@@ -1,0 +1,17 @@
+Function OutputValue_Trigger(ByVal Item)
+
+	
+	Dim t,t1,t2,t3
+	
+	Dim x
+	
+	For x =0 To 31
+		Set t1 = HMIRuntime.Tags("DeviceSet/Testing/DataBlocksGlobal/Data2WINCC/02Condition/"&CStr(x))
+		t1.Read
+		t3=t3&CStr(t1.Value)
+		
+	Next
+	
+	Item.OutputValue=CStr(t3) 
+	
+End Function
