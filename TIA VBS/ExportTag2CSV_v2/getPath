@@ -1,0 +1,51 @@
+Sub getPath()
+
+'This is a script For define the path of saving location 
+
+Dim location
+Dim SDCard,USB,CSV,TXT
+Dim format
+
+SDCard="\Storage Card SD\"
+USB="\Storage Card USB\"
+CSV=".csv"
+TXT=".txt"
+
+'define which drive is saved
+'USB?Memory card?
+If SmartTags("Log_HMI_LoggingAsMemoryCard") Then
+	location=SDCard
+Else If SmartTags("Log_HMI_LoggingAsUSB") Then
+	location=USB
+	Else
+	 location=SDCard
+End If
+End If	
+	
+'If default path button is pressed->device/record.csv->save as csv
+'													 ->save as txt
+
+If SmartTags("Log_HMI_LoggingDefaultPath") Then
+	If SmartTags("Log_HMI_LoggingAsCSV") Then
+		location =location&"record"&CSV
+ Else If SmartTags("Log_HMI_LoggingAsTxt") Then
+	location=location&"record"&TXT
+ End If 
+End If
+End If
+	
+'if the path is customed ->save as csv
+'											 ->save as txt
+If Not SmartTags("Log_HMI_LoggingDefaultPath") Then
+	 	If SmartTags("Log_HMI_LoggingAsCSV") Then
+		location =location&SmartTags("Log_HMI_LoggingPath")&CSV
+ Else If SmartTags("Log_HMI_LoggingAsTxt") Then
+	location=location&SmartTags("Log_HMI_LoggingPath")&TXT
+ End If 
+End If
+End If
+	
+'ouput the tag
+SmartTags("Log_HMI_LoggingFinalPath")=location
+
+End Sub

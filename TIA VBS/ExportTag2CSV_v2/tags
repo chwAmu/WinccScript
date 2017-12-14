@@ -1,0 +1,27 @@
+INDEX	Int	HMI_Connection_2
+Log_DataType	Array [0..500] of SInt	HMI_Connection_2
+Log_HMI_DataType	Array [0..9] of SInt	HMI_Connection_2
+Log_HMI_HmiPageINDEX	Int	HMI_Connection_2
+Log_HMI_LoggingAsCSV	Bool	HMI_Connection_2
+Log_HMI_LoggingAsMemoryCard	Bool	HMI_Connection_2
+Log_HMI_LoggingAsTxt	Bool	HMI_Connection_2
+Log_HMI_LoggingAsUSB	Bool	HMI_Connection_2
+Log_HMI_LoggingDefaultPath	Bool	HMI_Connection_2
+Log_HMI_LoggingDelete	Bool	HMI_Connection_2
+Log_HMI_LoggingFinalPath	WString	HMI_Connection_2
+Log_HMI_LoggingPath	WString	HMI_Connection_2
+Log_HMI_LoggingProcessing	Int	HMI_Connection_2
+Log_HMI_LoggingStatus	WString	HMI_Connection_2
+Log_HMI_LoggingStatusAtInt	Int	HMI_Connection_2
+Log_HMI_LoggIsFull	Bool	HMI_Connection_2
+Log_HMI_sortTagINDEX	Int	HMI_Connection_2
+Log_HMI_TagNameInNumbers	Array [0..9] of Int	HMI_Connection_2
+Log_HMI_ValueAfterChange	Array [0..9] of Real	HMI_Connection_2
+Log_HMI_ValueBeforeChange	Array [0..9] of Real	HMI_Connection_2
+Log_HMI_ValueChangeTime	Array [0..9] of DTL	HMI_Connection_2
+Log_TagName	Array [0..500] of WString	HMI_Connection_2
+Log_TagNameInNumbers	Array [0..500] of Int	HMI_Connection_2
+Log_ValueAfterChange	Array [0..500] of Real	HMI_Connection_2
+Log_ValueBeforeChange	Array [0..500] of Real	HMI_Connection_2
+Log_ValueChangeTime	Array [0..500] of DTL	HMI_Connection_2
+LogNumber	Array [0..9] of Int	<Internal tag>

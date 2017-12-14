@@ -1,0 +1,78 @@
+Sub ExportTag()
+
+Dim i,y
+
+Dim f, MyFile
+Dim a,b,c,d,e,g,h
+Dim sFileName, sHeader, sPath, sFolder1
+Dim v,st
+Dim location
+
+Const ForReading=1,ForWriteing=2,ForAppending=8
+
+'Re-init all the exporting status before
+LoggingStatusInit
+'get the setting path
+getPath
+
+'Keep going while error,so we can receive the error number
+On Error Resume Next
+
+'Create a FileCtl object to provide basic file input and output functionality
+'If Error is occurred,output the Error message to the Screen and set status=2 for the string box background color setting
+Set f = CreateObject("FileCtl.File")
+  If Err.Number <> 0 Then
+	ShowSystemAlarm  Err.Description
+	SmartTags("Log_HMI_LoggingStatus")=Err.Description
+	 SmartTags("Log_HMI_LoggingStatusAtInt")=2
+  Exit Sub
+End If
+
+'Open files in Output Mode
+'Overwrite everytime, if appending operation is better, just change ForWriteing to ForAppending
+'If Error is occurred,output the Error message to the Screen and set status=2 for the string box background color setting
+MyFile=SmartTags("Log_HMI_LoggingFinalPath")
+f.open MyFile, ForWriteing
+ 
+  If Err.Number <> 0 Then
+	ShowSystemAlarm  Err.Description
+	SmartTags("Log_HMI_LoggingStatus")=Err.Description
+	SmartTags("Log_HMI_LoggingStatusAtInt")=2
+  Exit Sub
+End If
+
+'Define the header of Data
+Dim Header
+Header="ValueChangeTime"&"/"&"DataType"&"/"&"TagNameInNumbers"&"/"&"ValueBeforeChange"&"/"&"ValueAfterChange"
+
+'Define how many records should be output. it is no resaon to output the empty log,right?:)!
+Dim Max
+Max=SmartTags("INDEX")
+
+'Output the Default data description
+		f.linePrint("Exprot Time:" &Now)
+		f.linePrint("Datatype***** 1=bool,2=int,3=Dint,4=Real")
+		f.linePrint("TagName List*****")
+		f.linePrint("1=Tag1,2=Tag2,3=Tag3,4=Tag4,5=Tag5,Please replace these from numbers to strings")
+		f.linePrint(Header)
+
+'Printing Sequence is ValueChangeTime--DataType--TagNameInNumber--ValueBefore--ValueAfter
+For i= 0 To Max 
+	a=CStr(SmartTags("Log_DataType")(i))&"/"'
+	b=CStr(SmartTags("Log_TagNameInNumbers")(i))&"/"'
+	c=CStr(SmartTags("Log_ValueAfterChange")(i))&"/"'
+	d=CStr(SmartTags("Log_ValueBeforeChange")(i))&"/"'
+	e=CStr(SmartTags("Log_ValueChangeTime")(i))&"/"'
+
+		f.linePrint(e&a&b&d&c)
+		SmartTags("Log_HMI_LoggingProcessing")=i
+
+Next
+	
+'close the stream and set the status
+f.Close
+SmartTags("Log_HMI_LoggingStatusAtInt")=1
+SmartTags("Log_HMI_LoggingStatus")="Export is Finished..."
+Set f = Nothing
+
+End Sub

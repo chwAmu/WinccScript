@@ -1,0 +1,8 @@
+Sub LoggingStatusInit()
+
+SmartTags("Log_HMI_LoggingStatusAtInt")=0
+SmartTags("Log_HMI_LoggingStatus")=""
+SmartTags("Log_HMI_LoggingProcessing")=0
+
+
+End Sub
