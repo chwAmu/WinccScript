@@ -31,7 +31,7 @@ If Not SmartTags("Start2Record") Then
 	End If
 Else
 	SmartTags("Start2Record")=False
-	logcontrol()
+
 End If
 
 	
