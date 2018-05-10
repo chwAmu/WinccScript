@@ -1,0 +1,40 @@
+Sub pathcheck()
+
+'pathcheckdb_path:WString
+'pathcheckdb_pathchecked:Bool
+'pathcheckdb_pathisnotfind:Bool
+'Start2Record:Bool
+
+Dim f
+
+If Not SmartTags("Start2Record") Then
+	'init all the variables
+	SmartTags("pathcheckdb_pathisnotfind")=False
+	SmartTags("pathcheckdb_path")=""
+	SmartTags("pathcheckdb_pathchecked")=False
+	
+	'set filesystem object
+	Set f=CreateObject("FileCtl.filesystem")
+	
+	'try to get the usb path
+	SmartTags("pathcheckdb_path")=f.Dir("\Storage Card USB")
+	SmartTags("pathcheckdb_pathchecked")=True
+	
+	'if return value is not empty, it means the path is lived
+	'then start to record
+	If SmartTags("pathcheckdb_path") <> "" Then
+		SmartTags("Start2Record")=True
+		SmartTags("pathcheckdb_pathisnotfind")=False
+		logcontrol()
+	Else
+		SmartTags("pathcheckdb_pathisnotfind")=True
+	End If
+Else
+	SmartTags("Start2Record")=False
+	logcontrol()
+End If
+
+	
+		
+
+End Sub
