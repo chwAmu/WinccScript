@@ -1,0 +1,19 @@
+'Here is a function to get the admin level
+'By using GetGroupNumber
+'If the group number is mathing what you wanted, just do somethings.
+
+Sub vbGetLogINLevel()
+
+Dim X
+
+Call GetGroupNumber(X)
+
+If X=100 Then
+	SmartTags("MasterSettingVisb") =1
+Else
+	SmartTags("MasterSettingVisb") =0
+End If
+
+	
+
+End Sub
