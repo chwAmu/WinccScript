@@ -1,0 +1,104 @@
+Function BitCheck(ByVal GDDevices, ByVal Bit)
+
+Dim TagName
+Dim x
+Dim inn
+Dim check
+
+SmartTags("GD_Words") = GDDevices
+inn = SmartTags("GD_Words")
+TagName =  "HMI_Tag_" &( inn)
+
+check=0
+SmartTags("GD_Words") = GDDevices
+inn = SmartTags("GD_Words")
+TagName =  "HMI_Tag_" &( inn)
+
+Select Case Bit
+	Case 0
+	 If SmartTags(TagName) And &h1 Then
+	  check = 1
+	   
+  End If
+  Case 1
+	 If SmartTags(TagName) And &h2 Then
+	  check = 1
+	   
+  End If
+  Case 2
+	 If SmartTags(TagName) And &h4 Then
+	  check = 1
+	   
+  End If
+  Case 3
+	 If SmartTags(TagName) And &h8 Then
+	  check = 1
+	   
+  End If
+  Case 4
+	 If SmartTags(TagName) And &h10 Then
+	  check = 1
+	   
+  End If
+  Case 5
+	 If SmartTags(TagName) And &h20 Then
+	  check = 1
+	   
+  End If
+  Case 6
+	 If SmartTags(TagName) And &h40 Then
+	  check = 1
+	   
+  End If
+  Case 7
+	 If SmartTags(TagName) And &h80 Then
+	  check = 1
+	   
+  End If
+  Case 8
+	 If SmartTags(TagName) And &h100 Then
+	  check = 1
+	   
+  End If
+  Case 9
+	 If SmartTags(TagName) And &h200 Then
+	  check = 1
+	   
+  End If
+  Case 10
+	 If SmartTags(TagName) And &h400 Then
+	  check = 1
+	   
+  End If
+  Case 11
+	 If SmartTags(TagName) And &h800 Then
+	  check = 1
+	   
+  End If
+  Case 12
+	 If SmartTags(TagName) And &h1000 Then
+	  check = 1
+	   
+  End If
+  Case 13
+	 If SmartTags(TagName) And &h2000 Then
+	  check = 1
+	   
+  End If
+  Case 14
+	 If SmartTags(TagName) And &h4000 Then
+	  check = 1
+	   
+  End If
+  Case 15
+	 If SmartTags(TagName) And &h8000 Then
+	  check = 1
+	   
+  End If
+  
+	 
+End Select
+
+BitCheck = check
+
+End Function
