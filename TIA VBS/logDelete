@@ -1,0 +1,16 @@
+'Declaration of local tags
+Dim fo			
+Dim path		
+Const NEU=0
+
+	path ="\Storage Card SD\Logs\Alarmlog1\Alarm_log_10.rdb"
+
+'Create a file object - Datei Objekt erstellen
+Set fo= CreateObject("FileCtl.File")
+
+fo.Kill path
+
+'Release the Object - Objekt wird freigegeben
+Set fo = Nothing
+
+ShowSystemAlarm "Storage of data was successful!"
